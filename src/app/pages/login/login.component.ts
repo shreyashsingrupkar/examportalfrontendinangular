@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/login.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private loginService:LoginService){}
+  constructor(private loginService:LoginService,private router:Router){}
   ngOnInit(): void {
     this.loginService.logOut();
   }
@@ -73,10 +74,12 @@ export class LoginComponent implements OnInit {
 
               if(this.loginService.getUserRole()=='ADMIN'){
                 console.log('welcome to admin dashboard')
-                window.location.href='/admin'
+                //window.location.href='/admin'
+                this.router.navigate(['admin']);
               }else if(this.loginService.getUserRole()=='NORMAL'){
                 console.log('welcome to user dashboard')
-                window.location.href='/user'
+                //window.location.href='/user'
+                this.router.navigate(['user']);
               }
     
               },(error)=>{

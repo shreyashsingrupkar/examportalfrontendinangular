@@ -12,7 +12,7 @@ export class UserGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-      if(this.loginService.isLoggedIn()&& this.loginService.getUserRole()){
+      if(this.loginService.isLoggedIn()&& this.loginService.getUserRole()=='NORMAL'){
         return true
       }
       this.loginService.logOut();
