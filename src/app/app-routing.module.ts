@@ -5,6 +5,8 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { UserdashboardComponent } from './pages/user/userdashboard/userdashboard.component';
+import { AdminGuard } from './services/admin.guard';
+import { UserGuard } from './services/user.guard';
 
 
 const routes: Routes = [
@@ -29,12 +31,14 @@ const routes: Routes = [
     path:'admin',
     component:AdmindashbordComponent,
     pathMatch:'full',
+    canActivate:[AdminGuard]
    
   },
   {
     path:'user',
     component:UserdashboardComponent,
     pathMatch:'full',
+    canActivate:[UserGuard]
     
   }
   

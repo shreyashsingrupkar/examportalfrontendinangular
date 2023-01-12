@@ -73,8 +73,10 @@ export class LoginComponent implements OnInit {
 
               if(this.loginService.getUserRole()=='ADMIN'){
                 console.log('welcome to admin dashboard')
+                window.location.href='/admin'
               }else if(this.loginService.getUserRole()=='NORMAL'){
                 console.log('welcome to user dashboard')
+                window.location.href='/user'
               }
     
               },(error)=>{
