@@ -30,6 +30,9 @@ export class LoginService {
   //user is logged in or not
   public isLoggedIn(){
     let tokenStr=localStorage.getItem("token");
+    console.log('is user token');
+    console.log(tokenStr);
+
     if(tokenStr==undefined|| tokenStr==''||tokenStr==null){
       return false;
     }
@@ -43,6 +46,7 @@ export class LoginService {
   public logOut(){
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("userrole");
     return true;
   }
 

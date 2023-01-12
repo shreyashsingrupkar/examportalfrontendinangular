@@ -10,7 +10,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private loginService:LoginService){}
   ngOnInit(): void {
-    
+    this.loginService.logOut();
   }
 
   public LoginData={
@@ -29,64 +29,77 @@ export class LoginComponent implements OnInit {
       alert("Please Enter Password");
       return;
     }
+    this.loginService.logOut();
     console.log(this.LoginData);
 
 
     //request to server to generate token
-    this.loginService.generateToken(this.LoginData).subscribe(
-      (data:any)=>{
-        console.log("local storage before generationg token ");
-        console.log(localStorage)
-        this.loginService.logOut();
-        console.log("local storage before generationg token calling logout function ");
-        console.log(localStorage)
-        console.log('token generated')
-        console.log(data.token);
-       
-        //login
-        //save token to local storage
-        if(this.loginService.loginUser(data)){
-          console.log('token saved to local storage');
-        }
-        console.log("local storage after generationg token ");
-        console.log(localStorage);
+    let isloggedin=this.loginService.isLoggedIn();
 
-        this.loginService.getCurrentUserDetails().subscribe(
-
-          (user)=>{
-            console.log(user)
-            this.loginService.userDetails(user);
-            this.loginService.setUserRole(user)
-
-          },(error)=>{
-
+    if(isloggedin==true){
+      console.log("user logged in already")
+      this.loginService.logOut();
+    }else{
+      this.loginService.generateToken(this.LoginData).subscribe(
+        (data:any)=>{
+          console.log("local storage before generationg token ");
+          console.log(localStorage)
+          this.loginService.logOut();
+          console.log("local storage before generationg token calling logout function ");
+          console.log(localStorage)
+          console.log('token generated')
+          console.log(data.token);
+         
+          //login
+          //save token to local storage
+          if(this.loginService.loginUser(data)){
+            console.log('token saved to local storage');
           }
-          
+          console.log("local storage after generationg token ");
+          console.log(localStorage);
+  
+         
+         
+          if(this.loginService.isLoggedIn()){
+            this.loginService.getCurrentUserDetails().subscribe(
+  
+              (user)=>{
+                console.log(user)
+                this.loginService.userDetails(user);
+                this.loginService.setUserRole(user)
 
-        );
-        console.log("local storage after generationg token and geting current user details ");
-        console.log(localStorage);
+                console.log("local storage after generationg token and geting current user details ");
+              console.log(localStorage);
 
-        if(this.loginService.isLoggedIn()){
-
-            if(this.loginService.getUserRole()=='ADMIN'){
-              console.log('welcome to admin dashboard')
-            }else if(this.loginService.getUserRole()=='NORMAL'){
-              console.log('welcome to user dashboard')
-            }
-
+              if(this.loginService.getUserRole()=='ADMIN'){
+                console.log('welcome to admin dashboard')
+              }else if(this.loginService.getUserRole()=='NORMAL'){
+                console.log('welcome to user dashboard')
+              }
+    
+              },(error)=>{
+    
+              }
+              
+    
+  
+            );
+            
+  
+          }
+  
+  
+  
+         
+  
+        },
+        (error)=>{
+          console.log(error);
         }
-
-
-
-       
-
-      },
-      (error)=>{
-        console.log(error);
-      }
-      
-    );
+        
+      );
+    }
+    
   }
 
 }
